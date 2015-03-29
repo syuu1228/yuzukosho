@@ -28,7 +28,7 @@ _hangup:
 	b .
 
 
-_IRQ_iterrupt:
+_IRQ_interrupt:
 	// スタックにレジスタの内容を退避させる
 	stmfd	r13!, {r0-r12,lr}
 	// C言語の割り込みハンドラ呼び出し
@@ -74,15 +74,58 @@ _swi_caller:
 _regdump:
 	// スタックにレジスタの内容を退避させる
 	stmfd	r13!, {r0-r12,lr}
-	// stack banked register
-	mrs r0, sp_irq
-	push {r0}
 
-	mov r0, r13
+	// stack usr mode register
+	push {r0-r7}
+	mrs r0, r8_usr
+	mrs r1, r9_usr
+	mrs r2, r10_usr
+	mrs r3, r11_usr
+	mrs r4, r12_usr
+	mrs r5, sp_usr
+	mrs r6, lr_usr
+	push {r0-r6}
+
+	// stack fiq mode register
+	mrs r0, r8_fiq
+	mrs r1, r9_fiq
+	mrs r2, r10_fiq
+	mrs r3, r11_fiq
+	mrs r4, r12_fiq
+	mrs r5, SP_fiq
+	mrs r6, LR_fiq
+	push {r0-r6}
+	
+	// stack irq register
+	// stack svc register
+	// stack abt register
+	// stack und register
+	mrs r0, SP_irq
+	mrs r1, LR_irq
+	mrs r2, SP_svc
+	mrs r3, LR_svc
+	mrs r4, SP_abt
+	mrs r5, LR_abt
+	mrs r6, SP_und
+	mrs r7, LR_und
+	push {r0-r7}
+
+	// stack mon register
+	mrs r0, SP_mon
+	mrs r1, LR_mon
+	mrs r2, SP_hyp
+	mrs r3, ELR_hyp
+	push {r0-r3}
+
+	// set sp start addr
+	mov r0, sp
+
 	// C言語の割り込みハンドラ呼び出し
 	bl	swi_hello
+
 	// restore stack address
-	sub sp, sp, #4
+	add sp, sp, #34
+
 	// スタックからレジスタの内容を復元する。
 	ldmfd	r13!, {r0-r12,lr}
 	# sub	pc, lr, #4
@@ -106,7 +149,7 @@ _vec_SWI:		.word	_regdump
 _vec_PrefAbort:	.word	_hangup
 _vec_DataAbort:	.word	_hangup
 _vec_Reserved:	.word	_hangup
-_vec_IRQ:		.word	_IRQ_iterrupt
+_vec_IRQ:		.word	_IRQ_interrupt
 _vec_FIQ:		.word	_hangup
 	.global  _initial_vector_end
 _initial_vector_end:
