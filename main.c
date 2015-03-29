@@ -6,19 +6,21 @@ void swi_hello(uint32_t *reg){
 	printf("swi called\n");
 	printf("swi_hello: cpsr = %08x\n",getmode());
 
-	printf("r0: %08x\n",*(reg+0));
-	printf("r1: %08x\n",*(reg+1));
-	printf("r2: %08x\n",*(reg+2));
-	printf("r3: %08x\n",*(reg+3));
-	printf("r4: %08x\n",*(reg+4));
-	printf("r5: %08x\n",*(reg+5));
-	printf("r6: %08x\n",*(reg+6));
-	printf("r7: %08x\n",*(reg+7));
-	printf("r8: %08x\n",*(reg+8));
-	printf("r9: %08x\n",*(reg+9));
-	printf("r10: %08x\n",*(reg+10));
-	printf("r11: %08x\n",*(reg+11));
-	printf("r12: %08x\n",*(reg+12));
+	printf("sp_irq: %08x\n",*reg++);
+
+	printf("r0: %08x\n",*reg++);
+	printf("r1: %08x\n",*reg++);
+	printf("r2: %08x\n",*reg++);
+	printf("r3: %08x\n",*reg++);
+	printf("r4: %08x\n",*reg++);
+	printf("r5: %08x\n",*reg++);
+	printf("r6: %08x\n",*reg++);
+	printf("r7: %08x\n",*reg++);
+	printf("r8: %08x\n",*reg++);
+	printf("r9: %08x\n",*reg++);
+	printf("r10: %08x\n",*reg++);
+	printf("r11: %08x\n",*reg++);
+	printf("r12: %08x\n",*reg++);
 	// 割り込み時にlrに突っ込まれる値は割り込み発生時のpc+4
 	printf("pc: %08x\n",*(reg+13) - 4);
 

@@ -74,9 +74,15 @@ _swi_caller:
 _regdump:
 	// スタックにレジスタの内容を退避させる
 	stmfd	r13!, {r0-r12,lr}
+	// stack banked register
+	mrs r0, sp_irq
+	push {r0}
+
 	mov r0, r13
 	// C言語の割り込みハンドラ呼び出し
 	bl	swi_hello
+	// restore stack address
+	sub sp, sp, #4
 	// スタックからレジスタの内容を復元する。
 	ldmfd	r13!, {r0-r12,lr}
 	# sub	pc, lr, #4
