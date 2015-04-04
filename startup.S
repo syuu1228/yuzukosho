@@ -8,9 +8,9 @@ _start:
 	msr	cpsr, r0
 	ldr	sp, =0x00008000
 
-	// SVCモードのスタックポインタ設定
-	// IRQ,FIQ disable, Thumb disable, SVC mode 
-	ldr	r0, =0x000000d3
+	// Hypモードのスタックポインタ設定
+	// IRQ,FIQ disable, Thumb disable, Hyp mode 
+	ldr	r0, =0x000000da
 	msr	cpsr, r0
 	ldr	sp, =0x06400000
 
