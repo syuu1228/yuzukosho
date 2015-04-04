@@ -30,6 +30,7 @@ LD_SCR  = bmrpi2.lds
 STARTUP= startup.o
 SYSCALL= syscalls.o
 MMU = mmu.o
+VMENTRY = vmentry.o
 
 # hal
 HAL_PATH = ./rpi_lib/
@@ -47,7 +48,7 @@ OBJS  = main.o
 
 all:	$(TARGET).bin
 
-$(TARGET).elf: $(STARTUP) $(SYSCALL) $(HAL_OBJS) $(OBJS) $(MMU)
+$(TARGET).elf: $(STARTUP) $(SYSCALL) $(HAL_OBJS) $(OBJS) $(MMU) $(VMENTRY)
 # $(TARGET).elf: $(STARTUP) $(OBJS) 
 	$(LD) -static -nostartfiles -T $(LD_SCR) $^ -o $@ $(LDFLAGS)
 	$(OBJDUMP) -D $(TARGET).elf > $(TARGET).disas
