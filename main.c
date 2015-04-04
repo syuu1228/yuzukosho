@@ -28,6 +28,7 @@ void swi_hello(uint32_t *reg){
 }
 
 int main(void){
+	int i;
 	rpi_init();
 
 	// JTAG用設定
@@ -49,14 +50,24 @@ int main(void){
 
 	printf("main: cpsr = %08x\n",getmode());
 
-	while(1){
+	for(i = 0; i < 10; i++) {
 		digitalWrite(47, HIGH);
 		delay(1000);
 		digitalWrite(47, LOW);
 		delay(1000);
-
-		_swi_caller(10);
+		printf("Hello\n");
 	}
+	vmentry();
 
 	return 0;
+}
+
+void guest_prog(void) {
+	while(1){
+		digitalWrite(47, HIGH);
+		delay(500);
+		digitalWrite(47, LOW);
+		delay(500);
+		printf("World\n");
+	}
 }
