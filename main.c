@@ -71,3 +71,24 @@ void guest_prog(void) {
 		printf("World\n");
 	}
 }
+
+void message_undef(void) {
+	printf("exception: undef\n");
+}
+
+void message_pref_abort(void) {
+	printf("exception: pref_abort\n");
+}
+
+void message_data_abort(void) {
+	printf("exception: data_abort\n");
+}
+
+void message_reserved(void) {
+	printf("exception: reserved\n");
+}
+
+void message_FIO(void) {
+	printf("exception: FIO\n");
+}
+

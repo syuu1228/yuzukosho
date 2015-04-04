@@ -88,6 +88,30 @@ _regdump:
 	# sub	pc, lr, #4
 	bx lr
 
+.global _handle_undef
+_handle_undef:
+	bl 	message_undef
+	b .
+
+.global _handle_pref_abort
+_handle_pref_abort:
+	bl 	message_pref_abort
+	b .
+
+.global _handle_data_abort
+_handle_data_abort:
+	bl 	message_data_abort
+	b .
+
+.global _handle_reserved
+_handle_reserved:
+	bl 	message_reserved
+	b .
+
+.global _handle_FIO
+_handle_FIO:
+	bl 	message_FIO
+	b .
 
 // ベクターテーブル設定用
 	.global  _initial_vector_start
@@ -101,13 +125,13 @@ _initial_vector_start:
 	ldr	pc, _vec_IRQ
 	ldr	pc, _vec_FIQ
 _vec_Reset:		.word	_start
-_vec_Undef:		.word	_hangup
+_vec_Undef:		.word	_handle_undef
 _vec_SWI:		.word	_regdump
-_vec_PrefAbort:	.word	_hangup
-_vec_DataAbort:	.word	_hangup
-_vec_Reserved:	.word	_hangup
+_vec_PrefAbort:	.word	_handle_pref_abort
+_vec_DataAbort:	.word	_handle_data_abort
+_vec_Reserved:	.word	_handle_reserved
 _vec_IRQ:		.word	_IRQ_iterrupt
-_vec_FIQ:		.word	_hangup
+_vec_FIQ:		.word	_handle_FIO
 	.global  _initial_vector_end
 _initial_vector_end:
 	mov r0,r0
